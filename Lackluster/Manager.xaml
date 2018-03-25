@@ -34,8 +34,8 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="UPC" DisplayMemberBinding="{Binding upc}" Width="150"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding movieTitle}" Width="350"/>
-                                <GridViewColumn Header="Price" DisplayMemberBinding="{Binding moviePrice}" Width="50"/>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding title}" Width="350"/>
+                                <GridViewColumn Header="Price" DisplayMemberBinding="{Binding price}" Width="50"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -50,7 +50,7 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="UPC" DisplayMemberBinding="{Binding upc}" Width="150"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding movieTitle}" Width="350"/>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding title}" Width="350"/>
                                 <!--<GridViewColumn Header="Price" DisplayMemberBinding="{Binding moviePrice}" Width="50"/>-->
                             </GridView>
                         </ListView.View>

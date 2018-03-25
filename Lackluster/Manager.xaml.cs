@@ -75,16 +75,18 @@ namespace Lackluster
                 {
 
                     //Create a movie object by passing the scanned text
-                    Movie scannedEntry = new Movie(txtRentalEntry.Text);
+                    Movie scannedEntry = new Movie();
+                    scannedEntry = DB.Movies.Get(txtRentalEntry.Text);
+
 
                     //Check if the movie is actually a movie in our database
-                    if (scannedEntry.isMovieCheck())
+                    if (scannedEntry.upc != "")
                     {
                         //Add the movie object to the list
                         lstRent.Items.Add(scannedEntry);
 
                         //Increase the total
-                        total = total + Convert.ToDouble(scannedEntry.moviePrice);
+                        total = total + Convert.ToDouble(scannedEntry.price);
                     } else
                     {
                         MessageBox.Show("This is not an active movie");
@@ -146,10 +148,11 @@ namespace Lackluster
                 {
 
                     //Create a movie object by passing the scanned text
-                    Movie scannedEntry = new Movie(txtReturnEntry.Text);
+                    Movie scannedEntry = new Movie();
+                    scannedEntry = DB.Movies.Get(txtReturnEntry.Text);
 
                     //Check if the movie is actually a movie in our database
-                    if (scannedEntry.isMovieCheck())
+                    if (scannedEntry.upc != "")
                     {
                         //Add the movie object to the list
                         lstReturn.Items.Add(scannedEntry);
@@ -180,15 +183,18 @@ namespace Lackluster
         private void btnCustomerLookup_Click(object sender, RoutedEventArgs e)
         {
             //Pass the phone number to the Customer object to create a new object
-            Customer searchCustomer = new Customer(txtCustomerPhoneNumberSearch.Text);
+            Customer searchCustomer = new Customer();
 
-            if (searchCustomer.IsCustomer)
+            searchCustomer = DB.Customers.GetByNumber(txtCustomerPhoneNumberSearch.Text);
+            
+
+            if (searchCustomer.phoneNumber != null)
             {
                 //Put the data in the rent boxes
-                txtCustomerFirstName.Text = searchCustomer.CustomerFname;
-                txtCustomerLastName.Text = searchCustomer.CustomerLname;
-                txtCustomerPhoneNumber.Text = searchCustomer.CustomerPhoneNumber;
-                txtCustomerEmail.Text = searchCustomer.CustomerEmail;
+                txtCustomerFirstName.Text = searchCustomer.firstName;
+                txtCustomerLastName.Text = searchCustomer.lastName;
+                txtCustomerPhoneNumber.Text = searchCustomer.phoneNumber;
+                txtCustomerEmail.Text = searchCustomer.email;
             }
             else
             {
