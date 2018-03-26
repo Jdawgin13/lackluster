@@ -80,7 +80,7 @@ namespace Lackluster
 
 
                     //Check if the movie is actually a movie in our database
-                    if (scannedEntry.upc != "")
+                    if (scannedEntry != null)
                     {
                         //Add the movie object to the list
                         lstRent.Items.Add(scannedEntry);
@@ -152,7 +152,7 @@ namespace Lackluster
                     scannedEntry = DB.Movies.Get(txtReturnEntry.Text);
 
                     //Check if the movie is actually a movie in our database
-                    if (scannedEntry.upc != "")
+                    if (scannedEntry != null)
                     {
                         //Add the movie object to the list
                         lstReturn.Items.Add(scannedEntry);
@@ -188,7 +188,7 @@ namespace Lackluster
             searchCustomer = DB.Customers.GetByNumber(txtCustomerPhoneNumberSearch.Text);
             
 
-            if (searchCustomer.phoneNumber != null)
+            if (searchCustomer != null)
             {
                 //Put the data in the rent boxes
                 txtCustomerFirstName.Text = searchCustomer.firstName;
