@@ -24,54 +24,78 @@ namespace Lackluster
         {
             InitializeComponent();
         }
-
+        public Employee emp;
         private void btnLogIn_Click(object sender, RoutedEventArgs e)
         {
             //Create instance of Manager window to control objects
             Manager manager = new Manager();
-
-            //Determine if user is Manager or Employee
-            //TODO - Implement LDAP Server
-            if (txtUser.Text.ToLower() == "admin")
+            if (txtUser.Text != "") //&& DB.Employee)
             {
-                //Set lblRole to Manager
-                manager.lblRole.Content = "MANAGER";
+                emp = DB.Employees.GetByUsername(txtUser.Text.ToLower());
 
-                //Create a LinearGradientBrush to set header colors
-                LinearGradientBrush green = new LinearGradientBrush();
-                
-                //Set GradientStops
-                green.GradientStops.Add(new GradientStop(Color.FromArgb(255,26,226,99),0));
-                green.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1));
+                //Determine if user is Manager or Employee
 
-                //Assign gradient to Manager's recHeader
-                manager.recHeader.Fill = green;
-               
-            } else {
+                if (emp.username == txtUser.Text.ToLower() && true == emp.GetDBPassword(pbxPassword.Password.ToString()))
+                {
+                    if (emp.isManager == true)
+                    {
+                        //Set lblRole to Manager
+                        manager.lblRole.Content = "MANAGER";
 
-                //Set lblRole to Employee
-                manager.lblRole.Content = "CLERK";
+                        //Create a LinearGradientBrush to set header colors
+                        LinearGradientBrush green = new LinearGradientBrush();
 
-                //Create a LinearGradientBrush to set header colors
-                LinearGradientBrush green = new LinearGradientBrush();
+                        //Set GradientStops
+                        green.GradientStops.Add(new GradientStop(Color.FromArgb(255, 26, 226, 99), 0));
+                        green.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1));
 
-                //Set GradientStops
-                green.GradientStops.Add(new GradientStop(Color.FromArgb(255, 26, 99, 226), 0));
-                green.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1));
+                        //Assign gradient to Manager's recHeader
+                        manager.recHeader.Fill = green;
 
-                //Assign gradient to Manager's recHeader
-                manager.recHeader.Fill = green;
+                        //Open the manager window and close the login window
+                        manager.Show();
+                        this.Close();
 
-                //Turn off tab and buttons not appropriate for an Employee
-                manager.tbReports.Visibility = Visibility.Hidden;
-                manager.tbEmployee.Visibility = Visibility.Hidden;
-                manager.btnMovieAdd.Visibility = Visibility.Hidden;
-                manager.btnMovieRemove.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
 
+                        //Set lblRole to Employee
+                        manager.lblRole.Content = "CLERK";
+
+                        //Create a LinearGradientBrush to set header colors
+                        LinearGradientBrush green = new LinearGradientBrush();
+
+                        //Set GradientStops
+                        green.GradientStops.Add(new GradientStop(Color.FromArgb(255, 26, 99, 226), 0));
+                        green.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1));
+
+                        //Assign gradient to Manager's recHeader
+                        manager.recHeader.Fill = green;
+
+                        //Turn off tab and buttons not appropriate for an Employee
+                        //manager.tbReports.Visibility = Visibility.Hidden;
+                        manager.tbEmployee.Visibility = Visibility.Hidden;
+                        manager.btnMovieAdd.Visibility = Visibility.Hidden;
+                        manager.btnMovieRemove.Visibility = Visibility.Hidden;
+
+                        //Open the manager window and close the login window
+                        manager.Show();
+                        this.Close();
+
+                    }
+                }
             }
-            //Open the manager window and close the login window
-            manager.Show();
-            this.Close();
+            else
+            {
+                MessageBox.Show("Please enter employee id");
+            }
+
+        }
+        private void btnForgot_Password_Click_1(object sender, RoutedEventArgs e)
+        {
+            Forgot_Password fp = new Forgot_Password();
+            fp.Show();
         }
     }
 }

@@ -101,6 +101,7 @@ namespace Lackluster
             }
 
             //TODO - Check that the movie is actually in stock (not rented out)
+
         }
 
         private void btnCompleteRental_Click(object sender, RoutedEventArgs e)
@@ -109,6 +110,24 @@ namespace Lackluster
             txtRentalEntry.Visibility = Visibility.Hidden;
 
             //TODO - Complete the Rental Process
+
+            //Check if there are movies in the list
+            if (lstRent.HasItems)
+            {
+                //Show message showing how many movies were rented and the total
+                MessageBox.Show($"You rented {lstRent.Items.Count} movie(s)\nFor a total of {txtTotal.Text}\nFor {txtCustomerFirstName.Text} {txtCustomerLastName.Text}");
+
+                //Clear the list
+                lstRent.Items.Clear();
+
+                //Reset txtTotal
+                txtTotal.Text = "$0.00";
+
+                //Reset total
+                total = 0.00;
+
+
+            }
         }
 
         private void btnStartReturn_Click(object sender, RoutedEventArgs e)
@@ -178,6 +197,15 @@ namespace Lackluster
             txtReturnEntry.Visibility = Visibility.Hidden;
 
             //TODO - Complete the Return Process
+
+            //Check if there are movies in the list
+            if (lstReturn.HasItems){
+                //Show message showing how many movies were rented and the total
+                MessageBox.Show($"You returned {lstReturn.Items.Count} movie(s)");
+
+                //Clear the list
+                lstReturn.Items.Clear();
+            }
         }
 
         private void btnCustomerLookup_Click(object sender, RoutedEventArgs e)

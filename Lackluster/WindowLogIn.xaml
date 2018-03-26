@@ -27,7 +27,7 @@
         <Label x:Name="label1_Copy" Content="Password:" HorizontalAlignment="Left" Margin="10,249,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <PasswordBox x:Name="pbxPassword" HorizontalAlignment="Left" Margin="81,252,0,0" VerticalAlignment="Top" Width="218" Height="23"/>
         <Label x:Name="lblLogo" Content="LACKLUSTER" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Height="70" FontSize="48" FontWeight="Bold" Foreground="#FFFBFBFB"/>
-        <Button x:Name="btnForgot_Password" Content="Reset Password" HorizontalAlignment="Left" Margin="107,370,0,0" VerticalAlignment="Top" Width="98" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF0D34E8"/>
+        <Button x:Name="btnForgot_Password" Content="Reset Password" HorizontalAlignment="Left" Margin="107,370,0,0" VerticalAlignment="Top" Width="98" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF0D34E8" Click="btnForgot_Password_Click_1"/>
         <Button x:Name="btnLogIn" Content="Log In" HorizontalAlignment="Left" Margin="120,306,0,0" VerticalAlignment="Top" Width="75" Click="btnLogIn_Click" FontSize="14" FontWeight="Bold"/>
         <Label x:Name="lblLogoSub" Content="VIDEO" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="22,90,22,0" VerticalAlignment="Top" Height="55" Width="277" FontSize="36" FontWeight="Bold" Foreground="White"/>
 
