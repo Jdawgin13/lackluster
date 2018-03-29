@@ -20,6 +20,7 @@ namespace Lackluster
         public string genre { get; set; }
         public string upc { get; set; }
         public string price { get; set; }
+        public bool isRented { get; set; }
         public bool isActive { get; set; }
 
         public Movie(string title, string rating, string year, string genre, string upc, string price, bool isActive)

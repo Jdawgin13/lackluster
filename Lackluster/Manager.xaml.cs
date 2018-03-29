@@ -22,6 +22,9 @@ namespace Lackluster
         //Initialize total amount to zero
         double total = 0.00;
 
+        public Employee currentUser; //variable to hold current user
+        private Customer currentCustomer; //Variable to hold the customer who was looked up
+
         public Manager()
         {
             InitializeComponent();
@@ -40,11 +43,36 @@ namespace Lackluster
 
         private void btnStartRental_Click(object sender, RoutedEventArgs e)
         {
-            //Show the txtRentalEntry Box
-            txtRentalEntry.Visibility = Visibility.Visible;
+            //Make sure there is a currentCustomer set
+            if(currentCustomer != null)
+            {
+                //Hide and lock fields
+                txtCustomerPhoneNumberSearch.Focusable = false;
+                txtCustomerFirstName.Focusable = false;
+                txtCustomerLastName.Focusable = false;
+                txtCustomerPhoneNumber.Focusable = false;
+                txtCustomerEmail.Focusable = false;
+                btnCustomerLookup.Focusable = false;
+                btnCustomerAdd.Focusable = false;
+                btnUpdateCustomerInfo.Focusable = false;
+                btnStartRental.Focusable = false;
+                tbReturn.Focusable = false;
+                tbMovies.Focusable = false;
+                tbCustomer.Focusable = false;
+                tbReports.Focusable = false;
+                tbEmployee.Focusable = false;
 
-            //Set focus to the txtRentalEntry Box
-            txtRentalEntry.Focus();
+                //Show the txtRentalEntry Box
+                txtRentalEntry.Visibility = Visibility.Visible;
+
+                //Set focus to the txtRentalEntry Box
+                txtRentalEntry.Focus();
+            }
+            else
+            {
+                //Warn user they need to look up a customer
+                MessageBox.Show("You need to look up a customer");
+            }
         }
 
         private void txtScanEntry_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -79,8 +107,8 @@ namespace Lackluster
                     scannedEntry = DB.Movies.Get(txtRentalEntry.Text);
 
 
-                    //Check if the movie is actually a movie in our database
-                    if (scannedEntry != null)
+                    //Check if the movie is actually a movie in our database & not already rented out
+                    if (scannedEntry != null && !scannedEntry.isRented)
                     {
                         //Add the movie object to the list
                         lstRent.Items.Add(scannedEntry);
@@ -100,8 +128,6 @@ namespace Lackluster
                 txtRentalEntry.Text = "";
             }
 
-            //TODO - Check that the movie is actually in stock (not rented out)
-
         }
 
         private void btnCompleteRental_Click(object sender, RoutedEventArgs e)
@@ -114,6 +140,10 @@ namespace Lackluster
             //Check if there are movies in the list
             if (lstRent.HasItems)
             {
+                foreach(Movie i in lstRent.Items)
+                {
+                    DB.Rentals.Create(currentUser, currentCustomer, i);
+                }
                 //Show message showing how many movies were rented and the total
                 MessageBox.Show($"You rented {lstRent.Items.Count} movie(s)\nFor a total of {txtTotal.Text}\nFor {txtCustomerFirstName.Text} {txtCustomerLastName.Text}");
 
@@ -128,6 +158,30 @@ namespace Lackluster
 
 
             }
+
+            //UnHide and unlock fields
+            txtCustomerPhoneNumberSearch.Focusable = true;
+            txtCustomerFirstName.Focusable = true;
+            txtCustomerLastName.Focusable = true;
+            txtCustomerPhoneNumber.Focusable = true;
+            txtCustomerEmail.Focusable = true;
+            btnCustomerLookup.Focusable = true;
+            btnCustomerAdd.Focusable = true;
+            btnUpdateCustomerInfo.Focusable = true;
+            btnStartRental.Focusable = true;
+            tbReturn.Focusable = true;
+            tbMovies.Focusable = true;
+            tbCustomer.Focusable = true;
+            tbReports.Focusable = true;
+            tbEmployee.Focusable = true;
+
+            //Clear out the customer
+            currentCustomer = null;
+            txtCustomerPhoneNumberSearch.Text = "";
+            txtCustomerFirstName.Text = "";
+            txtCustomerLastName.Text = "";
+            txtCustomerPhoneNumber.Text = "";
+            txtCustomerEmail.Text = "";
         }
 
         private void btnStartReturn_Click(object sender, RoutedEventArgs e)
@@ -223,11 +277,18 @@ namespace Lackluster
                 txtCustomerLastName.Text = searchCustomer.lastName;
                 txtCustomerPhoneNumber.Text = searchCustomer.phoneNumber;
                 txtCustomerEmail.Text = searchCustomer.email;
+
+                //Set the current customer to the found searched customer for later use in the rental process 
+                //(eg. Creating the rental record)
+                currentCustomer = searchCustomer;
             }
             else
             {
                 //Phone number not found in database
                 MessageBox.Show("Phone number not found");
+
+                //set currentCustomer to null
+                currentCustomer = null;
             }
 
 

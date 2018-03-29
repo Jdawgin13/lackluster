@@ -52,8 +52,9 @@ namespace Lackluster
                         //Assign gradient to Manager's recHeader
                         manager.recHeader.Fill = green;
 
-                        //Open the manager window and close the login window
+                        //Open the manager window, pass the current user, and close the login window
                         manager.Show();
+                        manager.currentUser = emp;
                         this.Close();
 
                     }
@@ -79,8 +80,9 @@ namespace Lackluster
                         manager.btnMovieAdd.Visibility = Visibility.Hidden;
                         manager.btnMovieRemove.Visibility = Visibility.Hidden;
 
-                        //Open the manager window and close the login window
+                        //Open the manager window, pass the current user, and close the login window
                         manager.Show();
+                        manager.currentUser = emp;
                         this.Close();
 
                     }

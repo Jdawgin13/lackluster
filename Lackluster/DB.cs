@@ -129,7 +129,7 @@ namespace Lackluster
             public static Movie Get(string upc)
             {
                 //Query to get movie
-                string query = "Select upc.upc as UPC , m.* From movies m Inner Join moviesupc upc on m.id = upc.movieId Where upc.upc = '" + upc + "'";
+                string query = "Select upc.upc as upc, upc.id AS upcID, upc.active as upcActive, upc.Rented as rented, m.* From movies m Inner Join moviesupc upc on m.id = upc.movieId Where upc.upc = '" + upc + "'";
 
                 MySqlDataReader reader = SelectQry(query);
 
@@ -144,7 +144,8 @@ namespace Lackluster
                     movie.releaseYear = reader.GetString("year");
                     movie.genre = reader.GetString("genre");
                     movie.upc = reader.GetString("upc");
-                    movie.isActive = reader.GetBoolean("active");
+                    movie.isRented = reader.GetBoolean("rented");
+                    movie.isActive = reader.GetBoolean("upcActive");
                     movie.price = "3.00";
 
                     reader.Close();
@@ -422,9 +423,39 @@ namespace Lackluster
         {
             //create new rental in db
             //Returns rental object
-            public static Rental Create(Employee emp, Customer cst, Movie movie)
+            public static bool Create(Employee emp, Customer cst, Movie movie)
             {
-                return new Rental();
+                //query to insert record into the rentals table
+                string query = $"insert into rentals (upc, customerId, employeeId, checkoutDate, dueDate, returnedDate, returnedById) values ('{movie.upc}', {cst.id}, {emp.id}, '{DateTime.Now.ToString("yyyy-MM-dd")}', '{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}', '9999/12/31', 99);";
+                
+                
+                //create command from query
+                MySqlCommand cmd = DB.Query(query);
+
+                //Create a reader by executying the SQL command
+                MySqlDataReader reader = cmd.ExecuteReader();
+                
+                //Close the reader for reuse
+                reader.Close();
+
+                //Check that only one row was indeed inserted
+                if (reader.RecordsAffected == 1)
+                {
+                    //query to update rented bool in movies upc
+                    query = $"update moviesupc set rented = 1 where upc = '{movie.upc}';";
+
+                    cmd = DB.Query(query);
+
+                    //Assign reader to new date from executed query
+                    reader = cmd.ExecuteReader();
+
+                    //Check that only one row was updated
+                    if (reader.RecordsAffected == 1)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             //Returns rental in DB
