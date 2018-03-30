@@ -23,7 +23,7 @@ namespace Lackluster
         double total = 0.00;
 
         public Employee currentUser; //variable to hold current user
-        private Customer currentCustomer; //Variable to hold the customer who was looked up
+        public Customer currentCustomer; //Variable to hold the customer who was looked up
 
         public Manager()
         {
@@ -343,6 +343,36 @@ namespace Lackluster
 
             //Give focuse back to the text entry box
             txtReturnEntry.Focus();
+        }
+
+        private void btnUpdateCustomerInfo_Click(object sender, RoutedEventArgs e)
+        {
+            //Make sure there is a currentCustomer set
+            if (currentCustomer != null)
+            {
+                //Update currentCustomer with the info on the text boxex
+                currentCustomer.phoneNumber = txtCustomerPhoneNumber.Text;
+                currentCustomer.firstName = txtCustomerFirstName.Text;
+                currentCustomer.lastName = txtCustomerLastName.Text;
+                currentCustomer.email = txtCustomerEmail.Text;
+
+                //Send the updated customer to the database
+                if (DB.Customers.Update(currentCustomer))
+                {
+                    MessageBox.Show($"{currentCustomer.firstName} {currentCustomer.lastName}'s information was updated");
+                }
+                else
+                {
+                    MessageBox.Show($"Could not update {currentCustomer.firstName} {currentCustomer.lastName}'s information");
+                }
+
+            }
+        }
+
+        private void btnNoCustomerFoundAdd_Click(object sender, RoutedEventArgs e)
+        {
+            AddCustomer addCustomer = new AddCustomer(this);
+            addCustomer.Show();
         }
     }
 }
