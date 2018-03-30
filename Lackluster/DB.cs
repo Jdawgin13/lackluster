@@ -274,11 +274,12 @@ namespace Lackluster
 
 
 
-                string query = "insert into employees (username, fname, lname, email, active, manager) Values (" + emp.username + ", " + emp.firstName + ", " + emp.lastName + ", " + emp.email + ", " + active + ", "+manager+" ) ";
+                string query = "insert into employees (username, fname, lname, email, active, manager)" +
+                    " Values ('" + emp.username + "', '" + emp.firstName + "', '" + emp.lastName + "', '" + emp.email + "', " + active + ", "+manager+" ) ";
 
                 int insert = InsertQry(query);
                 if (insert != -1){
-                    emp.id = ""+insert;
+                    emp.id = insert;
                     return emp;
                 }
                 return null;
@@ -289,7 +290,7 @@ namespace Lackluster
             public static bool Delete(Employee emp)
             {
                 emp.isActive = false;
-                string query = "update employees set active = 0 where employee.id = " + emp.id;
+                string query = "update employees set active = 0 where employees.id = " + emp.id;
                 int insert = InsertQry(query);
                 if (insert != -1)
                 {
@@ -310,7 +311,7 @@ namespace Lackluster
                 if (reader.Read())
                 {
                     Employee emp = new Employee();
-                    emp.id = reader.GetString("id");
+                    emp.id = reader.GetInt32("id");
                     emp.username = reader.GetString("username");
                     emp.firstName = reader.GetString("fname");
                     emp.lastName = reader.GetString("lname");
@@ -331,39 +332,63 @@ namespace Lackluster
             //Returns employee object
             public static bool Update(Employee emp)
             {
+                int act = 0;
+                int man = 0;
+                if (emp.isActive)
+                {
+                    act = 1;
+                }
+                if (emp.isManager)
+                {
+                    man = 1;
+                }
 
-              //  string query = "update employees set active = 0 where employee.id = " + emp.id;
-                return true;
+                string query = "update employees " +
+                    "set username = '" + emp.username + "'" +
+                    ", fname = '" + emp.firstName + "'" +
+                    ", lname = '" + emp.lastName + "'" +
+                    ", email = '" + emp.email + "'" +
+                    ", active = " + act + 
+                    ", manager = " + man +
+                    "  where employees.id = " + emp.id;
+
+
+                int insert = InsertQry(query);
+                if (insert != -1)
+                {
+                    return true;
+                }
+                return false;
             }
 
-            //Gets seleected employees hashed DB password
-            //Method might be replaced
-            public static string GetPassword(Employee emp)
+            //method to return employees hashed password
+            internal static string GetPassword(Employee emp)
             {
-                string query = "Select password from employees where id= " + emp.id;
+                string query = "Select password from employees where id=" + emp.id;
 
                 MySqlDataReader reader = SelectQry(query);
 
-                string password = null; ;
+                string password = null;
+
                 if (reader.Read())
                 {
                     password = reader.GetString("password");
+                    reader.Close();
                 }
 
+                reader.Close();
                 return password;
             }
 
-            public static bool SetPassword(Employee emp, string psw)
+            //updates employees hashed password in DB
+            internal static void UpdatePassword(Employee employee, string HashedPassword)
             {
-                return true;
-            }
+                string query = "Update employees set password = '" + HashedPassword + "' where employees.id = " + employee.id;
 
-            //method to change employees hashed password
-            public static bool ChangePassword(Employee emp, string password)
-            {
-                return true;
-            }
+                int update = InsertQry(query);
+                
 
+            }
         }
 
         public static class Customers
@@ -383,7 +408,7 @@ namespace Lackluster
                 if (reader.Read())
                 {
                     Customer cust = new Customer();
-                    cust.id = reader.GetString("id");
+                    cust.id = reader.GetInt32("id");
                     cust.phoneNumber = reader.GetString("phoneNumber");
                     cust.firstName = reader.GetString("fname");
                     cust.lastName = reader.GetString("lname");
@@ -400,21 +425,68 @@ namespace Lackluster
             }
 
             //updates customer info in db
-            public static Customer Update(Customer cst)
+            public static bool Update(Customer cst)
             {
-                return new Customer();
+
+                int act = 0;
+                if (cst.isActive)
+                {
+                    act = 1;
+                }
+                
+
+                string query = "update customers " +
+                    "set phoneNumber = '" + cst.phoneNumber + "'" +
+                    ", fname = '" + cst.firstName + "'" +
+                    ", lname = '" + cst.lastName + "'" +
+                    ", email = '" + cst.email + "'" +
+                    ", active = " + act +
+                    ",points = " + cst.points +
+                    "  where customers.id = " + cst.id;
+
+
+                int insert = InsertQry(query);
+                if (insert != -1)
+                {
+                    return true;
+                }
+                return false;
             }
 
             //creates new Customer in DB
             public static Customer Create(Customer cst)
             {
-                return new Customer();
+                int act = 0;
+                if (cst.isActive)
+                {
+                    act = 1;
+                }
+
+
+                string query = "Insert into customers (phoneNumber, fname, lname, email, active, points) Values ('" +
+                    cst.phoneNumber + "', '" + cst.firstName + "', '" +cst.lastName + "', '" + cst.email + "', " + act + ", " +cst.points +
+                    ")";
+
+
+                int insert = InsertQry(query);
+                if (insert != -1)
+                {
+                    cst.id = insert;
+                    return cst;
+                }
+                return null;
             }
 
             //sets customer as inactive
             public static bool Delete(Customer cst)
             {
-                return true;
+                string query = "update customers set active = 0 where customers.id = " + cst.id;
+                int insert = InsertQry(query);
+                if (insert != -1)
+                {
+                    return true;
+                }
+                return false;
             }
 
         }
@@ -426,7 +498,7 @@ namespace Lackluster
             public static bool Create(Employee emp, Customer cst, Movie movie)
             {
                 //query to insert record into the rentals table
-                string query = $"insert into rentals (upc, customerId, employeeId, checkoutDate, dueDate, returnedDate, returnedById) values ('{movie.upc}', {cst.id}, {emp.id}, '{DateTime.Now.ToString("yyyy-MM-dd")}', '{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}', '9999/12/31', 99);";
+                string query = $"insert into rentals (upc, customerId, employeeId, checkoutDate, dueDate) values ('{movie.upc}', {cst.id}, {emp.id}, '{DateTime.Now.ToString("yyyy-MM-dd")}', '{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}');";
                 
                 
                 //create command from query
@@ -442,7 +514,8 @@ namespace Lackluster
                 if (reader.RecordsAffected == 1)
                 {
                     //query to update rented bool in movies upc
-                    query = $"update moviesupc set rented = 1 where upc = '{movie.upc}';";
+                    query = $"update moviesupc set rented = 1 where upc = '{movie.upc}';" +
+                        $" update movies inner join moviesupc on movies.id = moviesupc.movieId set timesRented = timesRented+1 where moviesupc.upc = '{movie.upc}'";
 
                     cmd = DB.Query(query);
 
@@ -452,37 +525,71 @@ namespace Lackluster
                     //Check that only one row was updated
                     if (reader.RecordsAffected == 1)
                     {
+                        reader.Close();
+                        return true;
+                    }
+                }
+                reader.Close();
+                return false;
+            }
+
+            //Returns rental in DB
+            //Returns bool
+            //True return successfull 
+            //False error
+            public static bool Return(Employee emp, /*Customer cst,*/ Movie movie)
+            {
+                string query = "Update rentals set rentals.returnedDate = Now(), rentals.returnedById = " + emp.id + " Where rentals.upc = '" + movie.upc + "' ";
+                int update = UpdateQry(query);
+                if (update != -1)
+                {
+                    query = $"Update moviesupc set rented = 0 where upc = '{movie.upc}'";
+                    int updated = UpdateQry(query);
+                    if (updated != -1)
+                    {
                         return true;
                     }
                 }
                 return false;
             }
 
-            //Returns rental in DB
-            //Returns rental obj
-            public static Rental Return(Employee emp, Customer cst, Movie movie)
-            {
-                return new Rental();
-            }
-
             //Gets all late rentals
-            //Returns list of rentals
-            public static List<Rental> Late()
+            //Returns a list of arrays. array contains data need to print out late movies
+            public static List<String[]> Late()
             {
-                return new List<Rental>();
+                string query = "Select customers.fname, customers.lname, customers.phoneNumber, movies.title, rentals.dueDate " +
+                "From rentals "+
+                "Inner Join customers as customers on customers.id = rentals.customerId "+
+                "Inner Join moviesupc as upc on upc.upc = rentals.upc " +
+                "inner join movies as movies on movies.id = upc.movieId " +
+                "where dueDate<Now() AND rentals.returnedById IS null";
 
+                MySqlDataReader reader = SelectQry(query);
+
+                //List<Rental> LateRentals = new List<Rental>();
+
+                List<String[]> LateRentals = new List<string[]>();
+
+                
+                while (reader.Read())
+                {
+                    
+                    string customerName = reader.GetString("fname") + " " + reader.GetString("lname");
+                    string number = reader.GetString("phoneNumber");
+                    string title = reader.GetString("title");
+                    DateTime dueDate = reader.GetDateTime("dueDate");
+                    string dueDateText = reader.GetDateTime("dueDate").ToString("yyyy-MM-dd");
+                    int daysLate = (DateTime.Now - dueDate).Days;
+
+                    string[] late = { customerName, number, title, dueDateText, daysLate.ToString() };
+                    LateRentals.Add(late);
+
+                }
+
+                reader.Close();
+                return LateRentals;
             }
 
-            public static void Update(Rental rental)
-            {
-
-            }
-
-            //Gets rental information based on vd upc code
-            public static Rental GetByUPC(string upc)
-            {
-                return new Rental();
-            }
         }
     }
 }

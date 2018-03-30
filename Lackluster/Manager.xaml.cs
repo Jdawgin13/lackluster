@@ -55,15 +55,15 @@ namespace Lackluster
                 btnCustomerLookup.Focusable = false;
                 btnCustomerAdd.Focusable = false;
                 btnUpdateCustomerInfo.Focusable = false;
-                btnStartRental.Focusable = false;
                 tbReturn.Focusable = false;
                 tbMovies.Focusable = false;
                 tbCustomer.Focusable = false;
                 tbReports.Focusable = false;
                 tbEmployee.Focusable = false;
 
-                //Show the txtRentalEntry Box
+                //Show the txtRentalEntry Box and btnDelete
                 txtRentalEntry.Visibility = Visibility.Visible;
+                btnDeleteRentalEntry.Visibility = Visibility.Visible;
 
                 //Set focus to the txtRentalEntry Box
                 txtRentalEntry.Focus();
@@ -132,10 +132,9 @@ namespace Lackluster
 
         private void btnCompleteRental_Click(object sender, RoutedEventArgs e)
         {
-            //Hide the txtRentalEntry Box
+            //Hide the txtRentalEntry Box and btnDelete
             txtRentalEntry.Visibility = Visibility.Hidden;
-
-            //TODO - Complete the Rental Process
+            btnDeleteRentalEntry.Visibility = Visibility.Hidden;
 
             //Check if there are movies in the list
             if (lstRent.HasItems)
@@ -168,7 +167,6 @@ namespace Lackluster
             btnCustomerLookup.Focusable = true;
             btnCustomerAdd.Focusable = true;
             btnUpdateCustomerInfo.Focusable = true;
-            btnStartRental.Focusable = true;
             tbReturn.Focusable = true;
             tbMovies.Focusable = true;
             tbCustomer.Focusable = true;
@@ -186,8 +184,16 @@ namespace Lackluster
 
         private void btnStartReturn_Click(object sender, RoutedEventArgs e)
         {
-            //Show the txtReturnEntry Box
+            //Show the txtReturnEntry Box and btnDeleteReturnEntry
             txtReturnEntry.Visibility = Visibility.Visible;
+            btnDeleteReturnEntry.Visibility = Visibility.Visible;
+
+            //Lock tabs
+            tbRent.Focusable = false;
+            tbMovies.Focusable = false;
+            tbCustomer.Focusable = false;
+            tbReports.Focusable = false;
+            tbEmployee.Focusable = false;
 
             //Set focus to the txtReturnEntry Box
             txtReturnEntry.Focus();
@@ -224,8 +230,8 @@ namespace Lackluster
                     Movie scannedEntry = new Movie();
                     scannedEntry = DB.Movies.Get(txtReturnEntry.Text);
 
-                    //Check if the movie is actually a movie in our database
-                    if (scannedEntry != null)
+                    //Check if the movie is actually a movie in our database & is rented out
+                    if (scannedEntry != null && scannedEntry.isRented)
                     {
                         //Add the movie object to the list
                         lstReturn.Items.Add(scannedEntry);
@@ -233,7 +239,7 @@ namespace Lackluster
                     }
                     else
                     {
-                        MessageBox.Show("This is not an active movie");
+                        MessageBox.Show("This movie is not rented out");
                     }
 
                 }
@@ -241,25 +247,35 @@ namespace Lackluster
                 //Reset the txtRentalEntry box
                 txtReturnEntry.Text = "";
             }
-
-            //TODO - Check to make sure the movie is indeed rented out
         }
 
         private void btnCompleteReturn_Click(object sender, RoutedEventArgs e)
         {
-            //Hide the txtReturnEntry Box
+            //Hide the txtReturnEntry Box and btnDeleteReturnEntry
             txtReturnEntry.Visibility = Visibility.Hidden;
-
-            //TODO - Complete the Return Process
+            btnDeleteReturnEntry.Visibility = Visibility.Hidden;
 
             //Check if there are movies in the list
             if (lstReturn.HasItems){
+
+                foreach (Movie i in lstReturn.Items)
+                {
+                    DB.Rentals.Return(currentUser, i);
+                }
+
                 //Show message showing how many movies were rented and the total
                 MessageBox.Show($"You returned {lstReturn.Items.Count} movie(s)");
 
                 //Clear the list
                 lstReturn.Items.Clear();
             }
+
+            //Unlock tabs
+            tbRent.Focusable = true;
+            tbMovies.Focusable = true;
+            tbCustomer.Focusable = true;
+            tbReports.Focusable = true;
+            tbEmployee.Focusable = true;
         }
 
         private void btnCustomerLookup_Click(object sender, RoutedEventArgs e)
@@ -292,6 +308,41 @@ namespace Lackluster
             }
 
 
+        }
+
+        private void btnDeleteRentalEntry_Click(object sender, RoutedEventArgs e)
+        {
+            //Make sure an item in the list is selected
+            if (lstRent.SelectedIndex > -1)
+            {
+                //Retrieve the selected movie object from the list
+                Movie soonToBeDeletedMovie = lstRent.SelectedItem as Movie;
+
+                //Reduce the total by the movie price
+                total -= Convert.ToDouble(soonToBeDeletedMovie.price);
+
+                //Update txtTotal with new price
+                txtTotal.Text = String.Format("{0:C}", total);
+
+                //Delete the item
+                lstRent.Items.RemoveAt(lstRent.SelectedIndex);
+            }
+
+            //Give focuse back to the text entry box
+            txtRentalEntry.Focus();
+        }
+
+        private void btnDeleteReturnEntry_Click(object sender, RoutedEventArgs e)
+        {
+            //Make sure an item in the list is selected
+            if (lstReturn.SelectedIndex > -1)
+            {
+               //Delete the item
+               lstReturn.Items.RemoveAt(lstReturn.SelectedIndex);
+            }
+
+            //Give focuse back to the text entry box
+            txtReturnEntry.Focus();
         }
     }
 }

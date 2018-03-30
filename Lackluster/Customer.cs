@@ -8,7 +8,7 @@ namespace Lackluster
 {
     public class Customer
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string phoneNumber { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
@@ -36,19 +36,5 @@ namespace Lackluster
         {
             DB.Customers.Update(this);
         }
-
-        
-        public void RentMovie(Movie movie, Employee emp)
-        {
-
-        }
-
-        public void RentMovies(List<Movie> movies, Employee emp)
-        {
-
-        }
-
-
-
     }
 }

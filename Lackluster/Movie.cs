@@ -43,11 +43,13 @@ namespace Lackluster
             DB.Movies.Update(this);
         }
 
+        
         public int TotalNumCopies()
         {
             return 0;
         }
 
+        //reaches db to see number of movies available
         public int NumAvailable()
         {
             return 0;

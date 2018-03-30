@@ -21,16 +21,16 @@
                     <Label x:Name="lblLastName" Content="Last Name: " HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
                     <TextBox x:Name="txtCustomerLastName" HorizontalAlignment="Left" Height="23" Margin="88,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="194"/>
                     <Label x:Name="lblPhoneNumber" Content="Phone Number: " HorizontalAlignment="Left" Margin="337,63,0,0" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
-                    <TextBox x:Name="txtCustomerPhoneNumber" HorizontalAlignment="Left" Height="23" Margin="438,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="121"/>
+                    <TextBox x:Name="txtCustomerPhoneNumber" HorizontalAlignment="Left" Height="23" Margin="438,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134"/>
                     <Label x:Name="lblEmail" Content="Email:" HorizontalAlignment="Left" Margin="337,91,0,0" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
-                    <TextBox x:Name="txtCustomerEmail" HorizontalAlignment="Left" Height="23" Margin="383,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
+                    <TextBox x:Name="txtCustomerEmail" HorizontalAlignment="Left" Height="23" Margin="383,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189"/>
                     <Button x:Name="btnStartRental" Content="Start Rental" HorizontalAlignment="Left" Margin="614,180,0,0" VerticalAlignment="Top" Width="150" Height="77" FontSize="18" HorizontalContentAlignment="Center" Click="btnStartRental_Click"/>
-                    <Label x:Name="lblTotal" Content="Total Customer Owes:" HorizontalAlignment="Left" Margin="632,20,0,0" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
-                    <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="62" Margin="637,46,0,0" VerticalAlignment="Top" Width="120" FontSize="20" FontWeight="Normal" HorizontalContentAlignment="Center" Text="$0.00" VerticalContentAlignment="Center" Focusable="False" IsTabStop="False" IsHitTestVisible="True" AllowDrop="False" Cursor="Arrow"/>
+                    <Label x:Name="lblTotal" Content="Total Customer Owes:" HorizontalAlignment="Left" Margin="614,20,0,0" VerticalAlignment="Top" FontSize="12" FontWeight="Bold" Width="143"/>
+                    <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="62" Margin="614,46,0,0" VerticalAlignment="Top" Width="143" FontSize="20" FontWeight="Normal" HorizontalContentAlignment="Center" Text="$0.00" VerticalContentAlignment="Center" Focusable="False" IsTabStop="False" IsHitTestVisible="True" AllowDrop="False" Cursor="Arrow"/>
                     <Button x:Name="btnCompleteRental" Content="Complete Rental" HorizontalAlignment="Left" Margin="614,306,0,0" VerticalAlignment="Top" Width="150" Height="77" FontSize="18" Click="btnCompleteRental_Click"/>
                     <Button x:Name="btnNoCustomerFoundAdd" Content="Add" HorizontalAlignment="Left" Margin="407,23,0,0" VerticalAlignment="Top" Width="75" FontSize="12"/>
                     <Button x:Name="btnUpdateCustomerInfo" Content="Update Info" HorizontalAlignment="Left" Margin="497,23,0,0" VerticalAlignment="Top" Width="75" FontSize="12"/>
-                    <ListView x:Name="lstRent" HorizontalAlignment="Left" Height="203" Margin="10,180,0,0" VerticalAlignment="Top" Width="562" Foreground="Black">
+                    <ListView x:Name="lstRent" HorizontalAlignment="Left" Height="221" Margin="10,162,0,0" VerticalAlignment="Top" Width="562" Foreground="Black">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="UPC" DisplayMemberBinding="{Binding upc}" Width="150"/>
@@ -39,7 +39,8 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <TextBox x:Name="txtRentalEntry" HorizontalAlignment="Left" Height="20" Margin="10,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="562" PreviewKeyDown="txtScanEntry_PreviewKeyDown" Visibility="Hidden"/>
+                    <TextBox x:Name="txtRentalEntry" HorizontalAlignment="Left" Height="20" Margin="10,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="562" PreviewKeyDown="txtScanEntry_PreviewKeyDown" Visibility="Hidden"/>
+                    <Button x:Name="btnDeleteRentalEntry" Content="Delete Entry" HorizontalAlignment="Left" Margin="614,142,0,0" VerticalAlignment="Top" Width="150" Click="btnDeleteRentalEntry_Click" Visibility="Hidden"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbReturn" Header="RETURN" FontWeight="Bold" FontSize="14" Width="100">
@@ -56,6 +57,7 @@
                         </ListView.View>
                     </ListView>
                     <TextBox x:Name="txtReturnEntry" HorizontalAlignment="Left" Height="20" Margin="10,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="587" PreviewKeyDown="txtReturnEntry_PreviewKeyDown" Visibility="Hidden"/>
+                    <Button x:Name="btnDeleteReturnEntry" Content="Delete Entry" HorizontalAlignment="Left" Margin="617,295,0,0" VerticalAlignment="Top" Width="150" Click="btnDeleteReturnEntry_Click" Visibility="Hidden"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbMovies" FontWeight="Bold" FontSize="14" Width="100" Header="MOVIES">

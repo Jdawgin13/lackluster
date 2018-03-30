@@ -9,13 +9,14 @@ namespace Lackluster
 {
      public class Employee
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string username { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string email { get; set; }
         public bool isActive { get; set; }
         public bool isManager { get; set; }
+        
 
         public Employee(string username, string firstName, string lastName, string email, bool isActive, bool isManager)
         {
@@ -37,40 +38,45 @@ namespace Lackluster
             DB.Employees.Update(this);
         }
 
-        private string GetDBPassword()
+        //method to change employees password
+        public void SetPassword(string password)
         {
-            return DB.Employees.GetPassword(this);
+            DB.Employees.UpdatePassword(this, HashPassword(password));
+            this.Save();
         }
 
-        public bool GetDBPassword(string password)
-        {
-            return DB.Employees.SetPassword(this, password);
-        }
-
+        //Takes employee hashed password from DB, then hashes this password paramater and compares
         public bool VerifyPassword(string password)
         {
-            //gets hashed password from db
-            string dbPassword = GetDBPassword();
-            byte[] dbHashedBytes = Convert.FromBase64String(dbPassword);
-
-            //Hashing text password
-            byte[] salt = new byte[16];
-            Array.Copy(dbHashedBytes, 0, salt, 0, 16);
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            byte[] textHash = pbkdf2.GetBytes(20);
-
-            for (int i = 0; i < 20; i++)
+            try
             {
-                if (dbHashedBytes[i + 16] != textHash[i])
+                //gets hashed password from db
+                //Stored in this.password field
+                string dbPassword = DB.Employees.GetPassword(this);
+                byte[] dbHashedBytes = Convert.FromBase64String(dbPassword);
+
+                //Hashing text password
+                byte[] salt = new byte[16];
+                Array.Copy(dbHashedBytes, 0, salt, 0, 16);
+                var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+                byte[] textHash = pbkdf2.GetBytes(20);
+
+                for (int i = 0; i < 20; i++)
                 {
-                    return false;
+                    if (dbHashedBytes[i + 16] != textHash[i])
+                    {
+                        return false;
+                    }
                 }
+
+                return true;
+            }catch(Exception e)
+            {
+                return false;
             }
-            
-            return true;
         }
 
-        public static string HashPassword(string password)
+        private static string HashPassword(string password)
         {
             byte[] salt;
 

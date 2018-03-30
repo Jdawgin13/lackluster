@@ -29,11 +29,6 @@ namespace Lackluster
             this.checkoutDate = DateTime.Now;
             this.dueDate = DateTime.Now;
         }
-
-       public void Save()
-        {
-            DB.Rentals.Update(this);
-        }
     }
 
 }

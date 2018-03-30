@@ -35,7 +35,7 @@ namespace Lackluster
 
                 //Determine if user is Manager or Employee
 
-                if (emp.username == txtUser.Text.ToLower() && true == emp.GetDBPassword(pbxPassword.Password.ToString()))
+                if (emp.username == txtUser.Text.ToLower() /*&& true == emp.VerifyPassword(pbxPassword.Password.ToString())*/)
                 {
                     if (emp.isManager == true)
                     {
