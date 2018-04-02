@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
+
 
 namespace Lackluster
 {
@@ -29,6 +31,11 @@ namespace Lackluster
         {
             InitializeComponent();
             //Test Here
+
+
+            cboReports.Items.Add("Late Rentals");
+            cboReports.Items.Add("Best Customers");
+ 
         }
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
@@ -373,6 +380,140 @@ namespace Lackluster
         {
             AddCustomer addCustomer = new AddCustomer(this);
             addCustomer.Show();
+        }
+
+        private void btnRunReport_Click(object sender, RoutedEventArgs e)
+        {
+            string chosenReport = cboReports.SelectedValue.ToString();
+
+            switch (chosenReport)
+            {
+                case "Late Rentals":
+
+                    lstReportReturn.Items.Clear();
+
+                    GridView lrGridView = new GridView();
+                    lrGridView.AllowsColumnReorder = true;
+
+
+                    GridViewColumn gvc1 = new GridViewColumn();
+                    gvc1.DisplayMemberBinding = new Binding("customerName");
+                    gvc1.Header = "Customer";
+                    gvc1.Width = 150;
+                    lrGridView.Columns.Add(gvc1);
+
+                    GridViewColumn gvc2 = new GridViewColumn();
+                    gvc2.DisplayMemberBinding = new Binding("customerPhone");
+                    gvc2.Header = "Phone";
+                    gvc2.Width = 150;
+                    lrGridView.Columns.Add(gvc2);
+
+                    GridViewColumn gvc3 = new GridViewColumn();
+                    gvc3.DisplayMemberBinding = new Binding("movieTitle");
+                    gvc3.Header = "Movie";
+                    gvc3.Width = 150;
+                    lrGridView.Columns.Add(gvc3);
+
+                    GridViewColumn gvc4 = new GridViewColumn();
+                    gvc4.DisplayMemberBinding = new Binding("dueDate");
+                    gvc4.Header = "Due Date";
+                    gvc4.Width = 150;
+                    lrGridView.Columns.Add(gvc4);
+
+                    GridViewColumn gvc5 = new GridViewColumn();
+                    gvc5.DisplayMemberBinding = new Binding("daysLate");
+                    gvc5.Header = "Days Late";
+                    gvc5.Width = 150;
+                    lrGridView.Columns.Add(gvc5);
+
+                    lstReportReturn.View = lrGridView;
+
+                    List<String[]> lateList = DB.Rentals.Late();
+
+
+                    
+                    
+
+                    foreach (String[] lateItem in lateList)
+                    {
+                        lstReportReturn.Items.Add(new LateReturn(lateItem[0], lateItem[1], lateItem[2], lateItem[3], lateItem[4]));
+                    }
+                    break;
+
+                case "Best Customers":
+
+                    List<String[]> bestCust = DB.Customers.bestCust();
+
+
+
+                    lstReportReturn.Items.Clear();
+
+                    GridView bcGridView = new GridView();
+                    bcGridView.AllowsColumnReorder = true;
+
+
+                    GridViewColumn bcgvc1 = new GridViewColumn();
+                    bcgvc1.DisplayMemberBinding = new Binding("customerName");
+                    bcgvc1.Header = "Customer";
+                    bcgvc1.Width = 150;
+                    bcGridView.Columns.Add(bcgvc1);
+
+                    GridViewColumn bcgvc2 = new GridViewColumn();
+                    bcgvc2.DisplayMemberBinding = new Binding("customerPhone");
+                    bcgvc2.Header = "Phone";
+                    bcgvc2.Width = 150;
+                    bcGridView.Columns.Add(bcgvc2);
+
+                    GridViewColumn bcgvc3 = new GridViewColumn();
+                    bcgvc3.DisplayMemberBinding = new Binding("customerPoints");
+                    bcgvc3.Header = "Points";
+                    bcgvc3.Width = 150;
+                    bcGridView.Columns.Add(bcgvc3);
+
+                    lstReportReturn.View = bcGridView;
+
+                    foreach (String[] bc in bestCust)
+                    {
+                        lstReportReturn.Items.Add(new bestCustomer(bc[0], bc[1], bc[2]));
+                    }
+                    break;
+
+            }
+
+        }
+
+        public class LateReturn
+        {
+            public String customerName { get; }
+            public String customerPhone { get; }
+            public String movieTitle { get; }
+            public String dueDate { get; }
+            public String daysLate { get; }
+
+
+            public LateReturn(String customerName, String customerPhone, String movieTitle, String dueDate, String daysLate)
+            {
+                this.customerName = customerName;
+                this.customerPhone = customerPhone;
+                this.movieTitle = movieTitle;
+                this.dueDate = dueDate;
+                this.daysLate = daysLate;
+            }
+        }
+
+        public class bestCustomer
+        {
+            public String customerName { get; }
+            public String customerPhone { get; }
+            public String customerPoints { get; }
+
+
+            public bestCustomer(String customerName, String customerPhone, String customerPoints)
+            {
+                this.customerName = customerName;
+                this.customerPhone = customerPhone;
+                this.customerPoints = customerPoints;
+            }
         }
     }
 }

@@ -81,8 +81,18 @@
             <TabItem x:Name="tbReports" Header="REPORTS" FontWeight="Bold" FontSize="14" Width="100">
                 <Grid Background="#FFE5E5E5">
                     <ComboBox x:Name="cboReports" HorizontalAlignment="Left" Margin="10,26,0,0" VerticalAlignment="Top" Width="270" FontSize="12" FontWeight="Normal"/>
-                    <Button x:Name="btnRunReport" Content="Run" HorizontalAlignment="Left" Margin="337,26,0,0" VerticalAlignment="Top" Width="75" FontSize="12" FontWeight="Bold"/>
-                    <ListBox x:Name="lstReportReturn" HorizontalAlignment="Left" Height="288" Margin="10,78,0,0" VerticalAlignment="Top" Width="725"/>
+                    <Button x:Name="btnRunReport" Content="Run" HorizontalAlignment="Left" Margin="337,26,0,0" VerticalAlignment="Top" Width="75" FontSize="12" FontWeight="Bold" Click="btnRunReport_Click"/>
+                    <ListView x:Name="lstReportReturn" HorizontalAlignment="Left" Height="313" Margin="10,83,0,0" VerticalAlignment="Top" Width="767">
+                        <ListView.View>
+                            <GridView>
+                                <!--<GridViewColumn Header="Customer" DisplayMemberBinding="{Binding customerName}" Width="150"/>
+                                <GridViewColumn Header="Phone" DisplayMemberBinding="{Binding customerPhone}" Width="150"/>
+                                <GridViewColumn Header="Movie" DisplayMemberBinding="{Binding movieTitle}" Width="150"/>
+                                <GridViewColumn Header="Due Date" DisplayMemberBinding="{Binding dueDate}" Width="150"/>
+                                <GridViewColumn Header="Days Late" DisplayMemberBinding="{Binding daysLate}" Width="150"/>-->
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
 
                 </Grid>
             </TabItem>

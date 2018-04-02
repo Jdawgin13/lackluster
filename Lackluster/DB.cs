@@ -424,6 +424,38 @@ namespace Lackluster
                 return null;
             }
 
+            public static List<String[]> bestCust()
+            {
+                string query = "Select fname, lname, phoneNumber, points" +
+                " From customers" +
+                " where active = TRUE" +
+                " Order By points DESC";
+
+                
+
+                MySqlDataReader reader = SelectQry(query);
+
+                //List<Rental> LateRentals = new List<Rental>();
+
+                List<String[]> bestCustomers = new List<string[]>();
+
+
+                while (reader.Read())
+                {
+
+                    string customerName = reader.GetString("fname") + " " + reader.GetString("lname");
+                    string number = reader.GetString("phoneNumber");
+                    int custPoints = reader.GetInt16("points");
+
+                    string[] cust = { customerName, number, custPoints.ToString() };
+                    bestCustomers.Add(cust);
+
+                }
+
+                reader.Close();
+                return bestCustomers;
+            }
+
             //updates customer info in db
             public static bool Update(Customer cst)
             {
@@ -558,8 +590,8 @@ namespace Lackluster
             public static List<String[]> Late()
             {
                 string query = "Select customers.fname, customers.lname, customers.phoneNumber, movies.title, rentals.dueDate " +
-                "From rentals "+
-                "Inner Join customers as customers on customers.id = rentals.customerId "+
+                "From rentals " +
+                "Inner Join customers as customers on customers.id = rentals.customerId " +
                 "Inner Join moviesupc as upc on upc.upc = rentals.upc " +
                 "inner join movies as movies on movies.id = upc.movieId " +
                 "where dueDate<Now() AND rentals.returnedById IS null";
@@ -570,10 +602,10 @@ namespace Lackluster
 
                 List<String[]> LateRentals = new List<string[]>();
 
-                
+
                 while (reader.Read())
                 {
-                    
+
                     string customerName = reader.GetString("fname") + " " + reader.GetString("lname");
                     string number = reader.GetString("phoneNumber");
                     string title = reader.GetString("title");
