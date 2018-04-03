@@ -77,7 +77,16 @@
     <Compile Include="Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManagerConfirm.xaml.cs">
+      <DependentUpon>ManagerConfirm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManagerLogin.xaml.cs">
+      <DependentUpon>ManagerLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Movie.cs" />
+    <Compile Include="NewUser.xaml.cs">
+      <DependentUpon>NewUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rental.cs" />
     <Compile Include="WindowLogIn.xaml.cs">
       <DependentUpon>WindowLogIn.xaml</DependentUpon>
@@ -118,6 +127,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Manager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManagerConfirm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManagerLogin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NewUser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

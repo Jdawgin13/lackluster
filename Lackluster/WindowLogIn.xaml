@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lackluster"
         mc:Ignorable="d"
-        Title="Lackluster Video Log In" Height="457" Width="328.973" WindowStartupLocation="CenterScreen">
+        Title="Lackluster Video Log In" Height="457" Width="328.973" WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
@@ -30,6 +30,7 @@
         <Button x:Name="btnForgot_Password" Content="Reset Password" HorizontalAlignment="Left" Margin="107,370,0,0" VerticalAlignment="Top" Width="98" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF0D34E8" Click="btnForgot_Password_Click_1"/>
         <Button x:Name="btnLogIn" Content="Log In" HorizontalAlignment="Left" Margin="120,306,0,0" VerticalAlignment="Top" Width="75" Click="btnLogIn_Click" FontSize="14" FontWeight="Bold"/>
         <Label x:Name="lblLogoSub" Content="VIDEO" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="22,90,22,0" VerticalAlignment="Top" Height="55" Width="277" FontSize="36" FontWeight="Bold" Foreground="White"/>
+		<Button x:Name="newuser" Content="New User?" HorizontalAlignment="Left" Margin="238,396,0,0" VerticalAlignment="Top" Width="83" Foreground="#FF0046FF" Background="{x:Null}" Click="newuser_Click" BorderBrush="{x:Null}"/>
 
     </Grid>
 </Window>

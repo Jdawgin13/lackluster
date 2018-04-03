@@ -1,0 +1,15 @@
+﻿<Window x:Name="Manager_Confirmation" x:Class="Lackluster.ManagerConfirm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lackluster"
+        mc:Ignorable="d"
+        Title="ManagerConfirm" Height="150" Width="300" ResizeMode="NoResize">
+    <Grid>
+        <Label Content="Do you want to create this new user?" HorizontalAlignment="Left" Height="27" Margin="35,28,0,0" VerticalAlignment="Top" Width="230"/>
+        <Button Content="Yes" HorizontalAlignment="Left" Height="24" Margin="61,69,0,0" VerticalAlignment="Top" Width="51" Click="Button_Click_1"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Height="24" Margin="168,69,0,0" VerticalAlignment="Top" Width="51" Click="Button_Click"/>
+
+    </Grid>
+</Window>

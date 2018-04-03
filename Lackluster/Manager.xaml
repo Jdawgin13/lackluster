@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lackluster"
         mc:Ignorable="d"
-        Title="Lackluster Video" Height="536.991" Width="813.938" WindowStartupLocation="CenterScreen">
+        Title="Lackluster Video" Height="536.991" Width="813.938" WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Grid>
         <Rectangle x:Name="recHeader" Height="95" VerticalAlignment="Top"/>
         <Label x:Name="lblRole" Content="MANAGER" Margin="0,63,10,0" FontSize="18" FontWeight="Bold" Foreground="#FF020202" HorizontalAlignment="Right" Width="105" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>

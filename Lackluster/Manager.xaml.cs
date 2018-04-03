@@ -45,7 +45,7 @@ namespace Lackluster
 
             //Open the login window and close the manager window
             login.Show();
-            this.Close();
+            this.Hide();
         }
 
         private void btnStartRental_Click(object sender, RoutedEventArgs e)
@@ -378,23 +378,29 @@ namespace Lackluster
 
         private void btnNoCustomerFoundAdd_Click(object sender, RoutedEventArgs e)
         {
+            //Open the add customer window
             AddCustomer addCustomer = new AddCustomer(this);
             addCustomer.Show();
         }
 
         private void btnRunReport_Click(object sender, RoutedEventArgs e)
         {
+            //getting selected report
             string chosenReport = cboReports.SelectedValue.ToString();
 
             switch (chosenReport)
-            {
+            {   
+                //Late Rentals report
                 case "Late Rentals":
 
                     lstReportReturn.Items.Clear();
 
+                    //creating column
+
                     GridView lrGridView = new GridView();
                     lrGridView.AllowsColumnReorder = true;
 
+                    //column 1
 
                     GridViewColumn gvc1 = new GridViewColumn();
                     gvc1.DisplayMemberBinding = new Binding("customerName");
@@ -402,11 +408,15 @@ namespace Lackluster
                     gvc1.Width = 150;
                     lrGridView.Columns.Add(gvc1);
 
+                    //column 2
+
                     GridViewColumn gvc2 = new GridViewColumn();
                     gvc2.DisplayMemberBinding = new Binding("customerPhone");
                     gvc2.Header = "Phone";
                     gvc2.Width = 150;
                     lrGridView.Columns.Add(gvc2);
+
+                    //column 3
 
                     GridViewColumn gvc3 = new GridViewColumn();
                     gvc3.DisplayMemberBinding = new Binding("movieTitle");
@@ -414,11 +424,15 @@ namespace Lackluster
                     gvc3.Width = 150;
                     lrGridView.Columns.Add(gvc3);
 
+                    //column 4
+
                     GridViewColumn gvc4 = new GridViewColumn();
                     gvc4.DisplayMemberBinding = new Binding("dueDate");
                     gvc4.Header = "Due Date";
                     gvc4.Width = 150;
                     lrGridView.Columns.Add(gvc4);
+
+                    //column 5
 
                     GridViewColumn gvc5 = new GridViewColumn();
                     gvc5.DisplayMemberBinding = new Binding("daysLate");
@@ -428,10 +442,11 @@ namespace Lackluster
 
                     lstReportReturn.View = lrGridView;
 
+                    //getting list of late rentals from db
                     List<String[]> lateList = DB.Rentals.Late();
 
 
-                    
+                    //adding list of late rentals to listview, creating LateReturn object to align with column headers
                     
 
                     foreach (String[] lateItem in lateList)
@@ -440,7 +455,10 @@ namespace Lackluster
                     }
                     break;
 
+                //Best Customers report
                 case "Best Customers":
+
+                    //Getting List of best customers from db
 
                     List<String[]> bestCust = DB.Customers.bestCust();
 
@@ -448,29 +466,36 @@ namespace Lackluster
 
                     lstReportReturn.Items.Clear();
 
+                    //Creating gridview with appropriate columns
+
                     GridView bcGridView = new GridView();
                     bcGridView.AllowsColumnReorder = true;
 
-
+                    //Column 1
                     GridViewColumn bcgvc1 = new GridViewColumn();
                     bcgvc1.DisplayMemberBinding = new Binding("customerName");
                     bcgvc1.Header = "Customer";
                     bcgvc1.Width = 150;
                     bcGridView.Columns.Add(bcgvc1);
 
+                    //Column 2
                     GridViewColumn bcgvc2 = new GridViewColumn();
                     bcgvc2.DisplayMemberBinding = new Binding("customerPhone");
                     bcgvc2.Header = "Phone";
                     bcgvc2.Width = 150;
                     bcGridView.Columns.Add(bcgvc2);
 
+                    //Column 3
                     GridViewColumn bcgvc3 = new GridViewColumn();
                     bcgvc3.DisplayMemberBinding = new Binding("customerPoints");
                     bcgvc3.Header = "Points";
                     bcgvc3.Width = 150;
                     bcGridView.Columns.Add(bcgvc3);
 
+                    
                     lstReportReturn.View = bcGridView;
+
+                    //adding list items to listview, creating bestCustomer object to align with column binding
 
                     foreach (String[] bc in bestCust)
                     {
@@ -481,6 +506,8 @@ namespace Lackluster
             }
 
         }
+        
+        //Class for late returns report
 
         public class LateReturn
         {
@@ -501,6 +528,8 @@ namespace Lackluster
             }
         }
 
+        //Class for best customer reports
+
         public class bestCustomer
         {
             public String customerName { get; }
@@ -514,6 +543,11 @@ namespace Lackluster
                 this.customerPhone = customerPhone;
                 this.customerPoints = customerPoints;
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }

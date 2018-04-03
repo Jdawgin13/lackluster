@@ -20,6 +20,7 @@ namespace Lackluster
     /// </summary>
     public partial class WindowLogIn : Window
     {
+		public static Boolean isMan = false;
         public WindowLogIn()
         {
             InitializeComponent();
@@ -35,7 +36,7 @@ namespace Lackluster
 
                 //Determine if user is Manager or Employee
 
-                if (emp.username == txtUser.Text.ToLower() /*&& true == emp.VerifyPassword(pbxPassword.Password.ToString())*/)
+                if (emp.username == txtUser.Text.ToLower() && true == emp.VerifyPassword(pbxPassword.Password.ToString()))
                 {
                     if (emp.isManager == true)
                     {
@@ -55,7 +56,7 @@ namespace Lackluster
                         //Open the manager window, pass the current user, and close the login window
                         manager.Show();
                         manager.currentUser = emp;
-                        this.Close();
+                        this.Hide();
 
                     }
                     else
@@ -83,7 +84,7 @@ namespace Lackluster
                         //Open the manager window, pass the current user, and close the login window
                         manager.Show();
                         manager.currentUser = emp;
-                        this.Close();
+                        this.Hide();
 
                     }
                 }
@@ -98,6 +99,17 @@ namespace Lackluster
         {
             Forgot_Password fp = new Forgot_Password();
             fp.Show();
+        }
+        private void newuser_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 newuser = new Window1();
+            newuser.Show();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+
         }
     }
 }
