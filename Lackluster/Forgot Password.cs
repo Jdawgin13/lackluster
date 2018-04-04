@@ -13,7 +13,7 @@ namespace Lackluster
     public partial class Forgot_Password: Form
     {
         private Boolean go = false;
-        private Employee emp;
+        public Employee emp;
         public Forgot_Password()
         {
             InitializeComponent();
@@ -26,8 +26,8 @@ namespace Lackluster
         {
             if (textBox3.Text == textBox4.Text && go == true) //&& textBox2.Text == emp.getSecurityAnswer)
             {
-                //emp.password = textBox3.Text;
-                //emp.save();
+                emp.SetPassword(textBox3.Text.ToString());
+                emp.Save();
                 string text = "Password has been changed.";
                 MessageBox.Show(text);
                 go = false;
@@ -47,7 +47,7 @@ namespace Lackluster
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (textBox5.Text != null)
+            if (textBox5.Text != null && DB.Employees.exists(textBox5.Text.ToLower()))
             {
                 emp = DB.Employees.GetByUsername(textBox5.Text.ToLower());
                 textBox2.ReadOnly = false;
